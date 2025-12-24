@@ -1,0 +1,321 @@
+Product Service - Complete Setup & Testing Guide
+
+
+## 🛠️ Running the Application
+
+
+Run the project
+🚩 Verify Application Started
+
+curl http://localhost:8083/api/products/health
+# Expected: "Product Service is running"
+ 
+
+## 📋 API Endpoints
+
+🚩 Category APIs 
+
+▶️ Create Category
+ http
+POST /api/categories
+Content-Type: application/json
+
+{
+  "categoryName": "Electronics",
+  "description": "Electronic devices and accessories",
+  "imageUrl": "http://localhost:9000/product-images/electronics.jpg",
+  "isActive": true,
+  "displayOrder": 1,
+  "metaTitle": "Electronics - Shop Now",
+  "metaDescription": "Browse our wide range of electronic devices"
+}
+ 
+
+▶️ Create Sub-Category
+ http
+POST /api/categories
+Content-Type: application/json
+
+{
+  "categoryName": "Smartphones",
+  "description": "Mobile phones and accessories",
+  "parentCategoryId": "cat-001",
+  "isActive": true,
+  "displayOrder": 1
+}
+ 
+
+▶️ Get All Categories
+ http
+GET /api/categories?page=0&size=20
+ 
+
+▶️ Get Active Categories
+ http
+GET /api/categories/active
+ 
+
+▶️ Get Sub-Categories
+ http
+GET /api/categories/parent/{parentCategoryId}
+ 
+
+▶️ Update Category
+ http
+PUT /api/categories/{categoryId}
+ 
+
+▶️ Delete Category
+ http
+DELETE /api/categories/{categoryId}
+ 
+
+ 
+
+🚩  Brand APIs 
+
+▶️ Create Brand
+ http
+POST /api/brands
+Content-Type: application/json
+
+{
+  "brandName": "Apple",
+  "description": "American multinational technology company",
+  "logoUrl": "http://localhost:9000/product-images/apple-logo.jpg",
+  "website": "https://www.apple.com",
+  "isActive": true
+}
+ 
+
+▶️ Get All Brands
+ http
+GET /api/brands?page=0&size=20
+ 
+
+▶️ Get Active Brands
+ http
+GET /api/brands/active
+ 
+
+▶️ Update Brand
+ http
+PUT /api/brands/{brandId}
+ 
+
+▶️ Delete Brand
+ http
+DELETE /api/brands/{brandId}
+
+🚩 Product APIs 
+
+▶️ Create Product
+ http
+POST /api/products
+Content-Type: application/json
+
+{
+  "name": "iPhone 15 Pro",
+  "description": "Latest flagship smartphone from Apple with A17 Pro chip, titanium design, and action button.",
+  "shortDescription": "Premium smartphone with cutting-edge features",
+  "categoryId": "cat-001",
+  "brandId": "brand-001",
+  "sku": "IPH15PRO-256-BLK",
+  "basePrice": 999.99,
+  "currency": "USD",
+  "taxPercentage": 18.0,
+  "isActive": true,
+  "isFeatured": true,
+  "tags": ["smartphone", "apple", "5g", "flagship"],
+  "imageUrls": [
+    "http://localhost:9000/product-images/iphone15pro-1.jpg"
+  ],
+  "specifications": {
+    "weight": "221g",
+    "dimensions": "159.9 x 76.7 x 8.25 mm",
+    "material": "Titanium",
+    "color": "Black",
+    "warranty": "1 year",
+    "additionalSpecs": [
+      {
+        "key": "Screen Size",
+        "value": "6.7 inches"
+      },
+      {
+        "key": "Processor",
+        "value": "A17 Pro"
+      },
+      {
+        "key": "RAM",
+        "value": "8GB"
+      }
+    ]
+  },
+  "variants": [
+    {
+      "sku": "IPH15PRO-256-BLK",
+      "name": "iPhone 15 Pro 256GB Black",
+      "attributes": {
+        "storage": "256GB",
+        "color": "Black"
+      },
+      "price": 999.99,
+      "compareAtPrice": 1099.99,
+      "costPrice": 800.00,
+      "quantity": 50,
+      "isAvailable": true
+    },
+    {
+      "sku": "IPH15PRO-512-BLK",
+      "name": "iPhone 15 Pro 512GB Black",
+      "attributes": {
+        "storage": "512GB",
+        "color": "Black"
+      },
+      "price": 1199.99,
+      "compareAtPrice": 1299.99,
+      "costPrice": 950.00,
+      "quantity": 30,
+      "isAvailable": true
+    }
+  ],
+  "seo": {
+    "metaTitle": "iPhone 15 Pro - Buy Now | Best Price",
+    "metaDescription": "Get the latest iPhone 15 Pro with A17 Pro chip, titanium design, and action button. Free shipping available.",
+    "metaKeywords": ["iphone", "apple", "smartphone", "flagship"]
+  },
+  "totalQuantity": 80
+}
+ 
+
+ Response (201 Created): 
+ json
+{
+  "success": true,
+  "message": "Product created successfully",
+  "data": {
+    "productId": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "iPhone 15 Pro",
+    "slug": "iphone-15-pro",
+    "basePrice": 999.99,
+    "isActive": true,
+    "createdAt": "2025-01-16T10:30:00"
+  }
+}
+ 
+
+▶️ Get Product by ID
+ http
+GET /api/products/{productId}
+ 
+
+▶️ Get Product by Slug
+ http
+GET /api/products/slug/iphone-15-pro
+ 
+
+▶️ Get All Products (Paginated)
+ http
+GET /api/products?page=0&size=20&sortBy=createdAt&sortDir=DESC
+ 
+
+▶️ Search Products
+ http
+GET /api/products/search?query=iphone&page=0&size=20
+ 
+
+▶️ Get Products by Category
+ http
+GET /api/products/category/{categoryId}?page=0&size=20
+ 
+
+▶️ Get Products by Brand
+ http
+GET /api/products/brand/{brandId}?page=0&size=20
+ 
+
+▶️ Get Featured Products
+ http
+GET /api/products/featured?page=0&size=20
+ 
+
+▶️ Update Product
+ http
+PUT /api/products/{productId}
+Content-Type: application/json
+
+{
+  "basePrice": 899.99,
+  "isFeatured": false
+}
+ 
+
+▶️ Delete Product
+ http
+DELETE /api/products/{productId}
+
+
+
+
+
+
+
+
+
+
+
+## 🧪 Testing with Postman
+
+🚩 Complete Test Flow
+
+ 1. Create a Brand: 
+ json
+POST http://localhost:8083/api/brands
+{
+  "brandName": "Apple",
+  "description": "Technology company",
+  "isActive": true
+}
+ 
+Save `brandId` from response.
+
+ 2. Create a Category: 
+ json
+POST http://localhost:8083/api/categories
+{
+  "categoryName": "Smartphones",
+  "description": "Mobile phones",
+  "isActive": true
+}
+ 
+Save `categoryId` from response.
+
+ 3. Upload Product Images: 
+ 
+POST http://localhost:8083/api/upload/images
+[Select 3-4 product images]
+ 
+Save image URLs from response.
+
+ 4. Create a Product: 
+Use the brandId, categoryId, and image URLs from above steps in the create product request.
+
+ 5. Test Search: 
+ 
+GET http://localhost:8083/api/products/search?query=iphone
+ 
+
+ 6. Test Get Product: 
+ 
+GET http://localhost:8083/api/products/{productId}
+ 
+
+ 7. Test Update Product: 
+ json
+PUT http://localhost:8083/api/products/{productId}
+{
+  "basePrice": 949.99,
+  "isFeatured": true
+}
+
+
