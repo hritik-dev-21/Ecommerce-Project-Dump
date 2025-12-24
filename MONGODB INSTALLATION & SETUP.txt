@@ -1,0 +1,92 @@
+MONGODB INSTALLATION & SETUP
+
+STEP 1: DOWNLOAD MONGODB (WINDOWS)
+	1. Open browser
+	2. Go to: https://www.mongodb.com/try/download/community
+	3. Select:
+		Version: Current
+		Platform: Windows
+		Package: MSI
+	4. Click Download
+
+STEP 2: INSTALL MONGODB
+	1. Double-click the downloaded .msi file
+	2. Click Next
+	3. Accept License → Next
+	4. Choose Complete installation
+	5. CHECK: Install MongoDB as a Service
+	6. Service user: Network Service User
+	7. CHECK: Install MongoDB Compass
+	8. Click Install
+	9. Finish installation
+MongoDB will start automatically.
+
+STEP 3: CHECK MONGODB IS RUNNING
+	1. Press Windows + R
+	2. Type: services.msc
+	3. Press Enter
+	4. Find "MongoDB Server"
+	5. Status must be RUNNING
+If not running → Right-click → Start
+
+STEP 4: CREATE ADMIN USER (IMPORTANT)
+	1. Open Command Prompt
+	2. Run:
+		mongosh
+	You should see:
+	test>
+	3. Switch to admin database:
+		use admin
+	4. Create admin user (COPY EXACTLY):
+		db.createUser({
+		user: "admin",
+		pwd: "admin123",
+		roles: [{ role: "root", db: "admin" }]
+		})
+	5. You should see:
+		{ ok: 1 }
+
+STEP 5: ENABLE AUTHENTICATION
+	1. Open File Explorer
+	2. Go to:
+		C:\Program Files\MongoDB\Server<version>\bin\mongod.cfg
+		Example:
+		C:\Program Files\MongoDB\Server\7.0\bin\mongod.cfg
+	3. Open mongod.cfg with Notepad (Run as Administrator)
+	4. Find:
+		#security:
+	5. Change to:
+		security:
+		authorization: enabled
+	6. Save the file
+
+STEP 6: RESTART MONGODB
+	Open services.msc
+	Right-click MongoDB Server
+	Click Restart
+
+STEP 7: CONNECT USING MONGODB COMPASS
+	Open MongoDB Compass
+	Click New Connection
+	Paste this connection string:
+		mongodb://admin:admin123@localhost:27017/?authSource=admin
+	Click Connect
+Connection should be SUCCESSFUL.
+
+STEP 8: CREATE DATABASE IN COMPASS
+	Click Create Database
+	Database Name:
+		product_service_db
+	Collection Name:
+		products
+	Click Create Database
+
+STEP 9: RUN SPRING BOOT APPLICATION
+	Open project
+	click Run in your IDE
+
+SUCCESS CHECK
+MongoDB Compass connected
+MongoDB Server running
+Spring Boot app starts without error
+No authentication errors
